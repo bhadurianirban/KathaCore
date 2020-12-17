@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm http://java.sun.com/xml/ns/persistence/orm_2_0.xsd" version="2.0">
+    <named-query name="Maintext.getAdhyayByParvaId">
+        <query>SELECT DISTINCT(a.maintextPK.adhyayid) FROM Maintext a WHERE a.maintextPK.parvaId = :parvaId</query>
+    </named-query>
+    
+    <named-query name="Maintext.findShlokByParvaAndAdhyayId">
+        <query>SELECT m FROM Maintext m WHERE m.maintextPK.parvaId = :parvaId AND m.maintextPK.adhyayid = :adhyayId</query>
+    </named-query>
+    
+    <named-query name="Maintext.findMaxShlokaNum">
+        <query>SELECT MAX(a.maintextPK.shlokanum) FROM Maintext a WHERE a.maintextPK.parvaId = :parvaId AND a.maintextPK.adhyayid = :adhyayId</query>
+    </named-query>
+    
+    <named-query name="Maintext.findMaxShlokaLine">
+        <query>SELECT MAX(a.maintextPK.shlokaline) FROM Maintext a WHERE a.maintextPK.parvaId = :parvaId AND a.maintextPK.adhyayid = :adhyayId AND a.maintextPK.shlokanum = :shlokaNum</query>
+    </named-query>
+    
+    <named-query name="Words.deleteAllWordsAndChars">
+        <query>DELETE FROM Words s WHERE s.wordsPK.maintextParvaId = :parvaId AND s.wordsPK.maintextAdhyayid = :adhyayId AND s.wordsPK.maintextShlokanum = :shlokaNum AND s.wordsPK.maintextShlokaline = :shlokaLine</query>
+    </named-query>
+    
+    <named-query name="Maintext.findShlokTranslation">
+        <query>SELECT m FROM Maintext m WHERE m.maintextPK.parvaId = :parvaId AND m.maintextPK.adhyayid = :adhyayId AND m.maintextPK.shlokanum = :shlokaNum</query>
+    </named-query>
+    
+    <named-query name="Maintext.findShlokaFirstChar">
+        <query>SELECT DISTINCT(m.firstchar) f FROM Maintext m ORDER BY f</query>
+    </named-query>
+    
+    <named-query name="Maintext.findShlokaByFirstChar">
+        <query>SELECT m FROM Maintext m WHERE m.firstchar = :firstChar ORDER BY m.shlokatext</query>
+    </named-query>
+    
+    <named-query name="Maintext.findShlokaCountByFirstChar">
+        <query>SELECT COUNT(m.shlokatext) FROM Maintext m WHERE m.firstchar = :firstChar ORDER BY m.shlokatext</query>
+    </named-query>
+    
+    <named-query name="Words.findAllDistinctFirstchar">
+        <query>SELECT DISTINCT(w.firstchar) c FROM Words w ORDER BY c</query>
+    </named-query>
+    
+    <named-query name="Words.findWordsCountByFirstChar">
+        <query>SELECT COUNT(w.wordtext) FROM Words w WHERE w.firstchar = :firstChar ORDER BY w.wordtext</query>
+    </named-query>
+    
+    <named-query name="Maintext.countTranslatedShloka">
+        <query>SELECT COUNT(m) FROM Maintext m WHERE m.maintextPK.shlokaline = 1 AND m.translatedtext IS NOT NULL</query>
+    </named-query>
+    
+    <named-query name="Maintext.countNotTranslatedShloka">
+        <query>SELECT COUNT(m) FROM Maintext m WHERE m.maintextPK.shlokaline = 1 AND m.translatedtext IS NULL</query>
+    </named-query>
+    
+    <named-query name="Referencetext.findAllTikaOfSelectedAnubad">
+        <query>SELECT r FROM Referencetext r WHERE r.referencetextPK.maintextParvaId = :parvaId AND r.referencetextPK.maintextAdhyayid = :adhyayId AND r.referencetextPK.maintextShlokanum = :shlokaNum AND r.referencetextPK.maintextShlokaline = :shlokaLine</query>
+    </named-query>
+</entity-mappings>
