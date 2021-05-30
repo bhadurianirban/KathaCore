@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import org.hedwig.cloud.response.HedwigResponseCode;
 import org.ksaman.core.DTO.MaintextDTO;
 import org.ksaman.core.DTO.ParvaDTO;
-import org.ksaman.core.DTO.ReferencetextDTO;
+import org.ksaman.core.DTO.TikaDTO;
 import org.ksaman.core.DTO.UbachaDTO;
 import org.ksaman.core.DTO.WordsDTO;
 import org.ksaman.core.db.DAO.MaintextDAO;
@@ -89,28 +89,28 @@ public class KSCoreService {
         return wordsDTO;
     }
     
-    public ReferencetextPK getReftextPK(ReferencetextDTO referencetextDTO) {
+    public ReferencetextPK prepareReftextPK(TikaDTO tikaDTO) {
         ReferencetextPK referencetextPK = new ReferencetextPK();
         
-        referencetextPK.setMaintextParvaId(referencetextDTO.getParvaId());
-        referencetextPK.setMaintextAdhyayid(referencetextDTO.getAdhyayId());
-        referencetextPK.setMaintextShlokanum(referencetextDTO.getShlokaNum());
-        referencetextPK.setMaintextShlokaline(referencetextDTO.getShlokaLine());
-        referencetextPK.setReftextid(referencetextDTO.getRefTextId());
+        referencetextPK.setMaintextParvaId(tikaDTO.getParvaId());
+        referencetextPK.setMaintextAdhyayid(tikaDTO.getAdhyayId());
+        referencetextPK.setMaintextShlokanum(tikaDTO.getShlokaNum());
+        referencetextPK.setMaintextShlokaline(tikaDTO.getShlokaLine());
+        referencetextPK.setReftextid(tikaDTO.getRefTextId());
         
         return referencetextPK;
     }
     
-    public ReferencetextDTO getReftextDTO(ReferencetextDTO referencetextDTO) {
+    public TikaDTO getTikaDetails(TikaDTO tikaDTO) {
         ReferencetextDAO referencetextDAO = new ReferencetextDAO(DatabaseConnection.EMF);
-        ReferencetextPK referencetextPK = getReftextPK(referencetextDTO);
+        ReferencetextPK referencetextPK = prepareReftextPK(tikaDTO);
         
         Referencetext referencetext = referencetextDAO.findReferencetext(referencetextPK);
         
-        referencetextDTO.setRefText(referencetext.getText());
+        tikaDTO.setRefText(referencetext.getText());
         //referencetextDTO.setRefTextPosition(referencetext.getReferencetextpos());
         
-        return referencetextDTO;
+        return tikaDTO;
     }
 
     public MaintextPK getMaintextPK(MaintextDTO maintextDTO) {
@@ -199,14 +199,14 @@ public class KSCoreService {
         return wordsDTOList;
     }
     
-    public List<ReferencetextDTO> getReferencetextDTOList() {
+    public List<TikaDTO> getReferencetextDTOList() {
         ReferencetextDAO referencetextDAO = new ReferencetextDAO(DatabaseConnection.EMF);
         List<Referencetext> referencetextList = referencetextDAO.findReferencetextEntities();
         
-        List<ReferencetextDTO> referencetextDTOList = new ArrayList<>();
+        List<TikaDTO> referencetextDTOList = new ArrayList<>();
         
         for (int i = 0; i < referencetextList.size(); i++) {
-            ReferencetextDTO referencetextDTO = new ReferencetextDTO();
+            TikaDTO referencetextDTO = new TikaDTO();
             
             referencetextDTO.setRefText(referencetextList.get(i).getText());
             
@@ -758,30 +758,30 @@ public class KSCoreService {
     
     //////////////////// REFERENCETEXT OPERATIONS ////////////////////
  
-    public List<ReferencetextDTO> getReftextList(int parvaId, int adhyayId, int shlokaNum, int shlokaLine) {
+    public List<TikaDTO> getReftextList(int parvaId, int adhyayId, int shlokaNum, int shlokaLine) {
         ReferencetextDAO referencetextDAO = new ReferencetextDAO(DatabaseConnection.EMF);
         List<Referencetext> referencetextList = referencetextDAO.getAnubadTika(parvaId, adhyayId, shlokaNum, shlokaLine);
         
-        List<ReferencetextDTO> referencetextDTOList = new ArrayList<>();
+        List<TikaDTO> tikaDTOList = new ArrayList<>();
         
         for(int i =0; i<referencetextList.size(); i++){
-            ReferencetextDTO referencetextDTO = new ReferencetextDTO();
+            TikaDTO tikaDTO = new TikaDTO();
             
-            referencetextDTO.setParvaId(parvaId);
-            referencetextDTO.setAdhyayId(adhyayId);
-            referencetextDTO.setShlokaNum(shlokaNum);
-            referencetextDTO.setShlokaLine(shlokaLine);
-            referencetextDTO.setRefTextId(referencetextList.get(i).getReferencetextPK().getReftextid());
-            referencetextDTO.setRefText(referencetextList.get(i).getText());
+            tikaDTO.setParvaId(parvaId);
+            tikaDTO.setAdhyayId(adhyayId);
+            tikaDTO.setShlokaNum(shlokaNum);
+            tikaDTO.setShlokaLine(shlokaLine);
+            tikaDTO.setRefTextId(referencetextList.get(i).getReferencetextPK().getReftextid());
+            tikaDTO.setRefText(referencetextList.get(i).getText());
             //referencetextDTO.setRefTextPosition(referencetextList.get(i).getReferencetextpos());
             
-            referencetextDTOList.add(referencetextDTO);
+            tikaDTOList.add(tikaDTO);
         }
         
-        return referencetextDTOList;
+        return tikaDTOList;
     }
     
-    public int addNewReference(ReferencetextDTO referencetextDTO) {
+    public int addTika(TikaDTO tikaDTO) {
         int responseCode;
 
         ReferencetextDAO referencetextDAO = new ReferencetextDAO(DatabaseConnection.EMF);
@@ -790,22 +790,22 @@ public class KSCoreService {
         MaintextPK maintextPK = new MaintextPK();
         MaintextDAO maintextDAO = new MaintextDAO(DatabaseConnection.EMF);
         
-        referencetextPK.setMaintextParvaId(referencetextDTO.getParvaId());
-        referencetextPK.setMaintextAdhyayid(referencetextDTO.getAdhyayId());
-        referencetextPK.setMaintextShlokanum(referencetextDTO.getShlokaNum());
-        referencetextPK.setMaintextShlokaline(referencetextDTO.getShlokaLine());
-        referencetextPK.setReftextid(referencetextDTO.getRefTextId());
+        referencetextPK.setMaintextParvaId(tikaDTO.getParvaId());
+        referencetextPK.setMaintextAdhyayid(tikaDTO.getAdhyayId());
+        referencetextPK.setMaintextShlokanum(tikaDTO.getShlokaNum());
+        referencetextPK.setMaintextShlokaline(tikaDTO.getShlokaLine());
+        referencetextPK.setReftextid(tikaDTO.getRefTextId());
 
-        maintextPK.setParvaId(referencetextDTO.getParvaId());
-        maintextPK.setAdhyayid(referencetextDTO.getAdhyayId());
-        maintextPK.setShlokaline(referencetextDTO.getShlokaLine());
-        maintextPK.setShlokanum(referencetextDTO.getShlokaNum());
+        maintextPK.setParvaId(tikaDTO.getParvaId());
+        maintextPK.setAdhyayid(tikaDTO.getAdhyayId());
+        maintextPK.setShlokaline(tikaDTO.getShlokaLine());
+        maintextPK.setShlokanum(tikaDTO.getShlokaNum());
         
         Maintext maintext = maintextDAO.findMaintext(maintextPK);
         
         referencetext.setReferencetextPK(referencetextPK);
         referencetext.setMaintext(maintext);
-        referencetext.setText(referencetextDTO.getRefText());
+        referencetext.setText(tikaDTO.getRefText());
 
         try {
             referencetextDAO.create(referencetext);
@@ -822,7 +822,7 @@ public class KSCoreService {
         return responseCode;
     }
     
-    public int updateReference(ReferencetextDTO referencetextDTO) {
+    public int updateTika(TikaDTO tikaDTO) {
         int responseCode;
 
         ReferencetextDAO referencetextDAO = new ReferencetextDAO(DatabaseConnection.EMF);
@@ -830,26 +830,67 @@ public class KSCoreService {
         MaintextPK maintextPK = new MaintextPK();
         MaintextDAO maintextDAO = new MaintextDAO(DatabaseConnection.EMF);
         
-        referencetextPK.setMaintextParvaId(referencetextDTO.getParvaId());
-        referencetextPK.setMaintextAdhyayid(referencetextDTO.getAdhyayId());
-        referencetextPK.setMaintextShlokanum(referencetextDTO.getShlokaNum());
-        referencetextPK.setMaintextShlokaline(referencetextDTO.getShlokaLine());
-        referencetextPK.setReftextid(referencetextDTO.getRefTextId());
+        referencetextPK.setMaintextParvaId(tikaDTO.getParvaId());
+        referencetextPK.setMaintextAdhyayid(tikaDTO.getAdhyayId());
+        referencetextPK.setMaintextShlokanum(tikaDTO.getShlokaNum());
+        referencetextPK.setMaintextShlokaline(tikaDTO.getShlokaLine());
+        referencetextPK.setReftextid(tikaDTO.getRefTextId());
 
-        maintextPK.setParvaId(referencetextDTO.getParvaId());
-        maintextPK.setAdhyayid(referencetextDTO.getAdhyayId());
-        maintextPK.setShlokaline(referencetextDTO.getShlokaLine());
-        maintextPK.setShlokanum(referencetextDTO.getShlokaNum());
+        maintextPK.setParvaId(tikaDTO.getParvaId());
+        maintextPK.setAdhyayid(tikaDTO.getAdhyayId());
+        maintextPK.setShlokaline(tikaDTO.getShlokaLine());
+        maintextPK.setShlokanum(tikaDTO.getShlokaNum());
         
         Maintext maintext = maintextDAO.findMaintext(maintextPK);
         Referencetext referencetext = referencetextDAO.findReferencetext(referencetextPK);
         
         referencetext.setReferencetextPK(referencetextPK);
         referencetext.setMaintext(maintext);
-        referencetext.setText(referencetextDTO.getRefText());
+        referencetext.setText(tikaDTO.getRefText());
 
         try {
             referencetextDAO.edit(referencetext);
+            responseCode = HedwigResponseCode.SUCCESS;
+
+        } catch (NonexistentEntityException ex) {
+            Logger.getLogger(KSCoreService.class.getName()).log(Level.SEVERE, null, ex);
+            responseCode = HedwigResponseCode.DB_NON_EXISTING;
+
+        } catch (Exception ex) {
+            Logger.getLogger(KSCoreService.class.getName()).log(Level.SEVERE, null, ex);
+            responseCode = HedwigResponseCode.DB_SEVERE;
+        }
+        return responseCode;
+    }
+    
+        public int deleteTika(TikaDTO tikaDTO) {
+        int responseCode;
+
+        ReferencetextDAO referencetextDAO = new ReferencetextDAO(DatabaseConnection.EMF);
+        ReferencetextPK referencetextPK = new ReferencetextPK();
+//        MaintextPK maintextPK = new MaintextPK();
+//        MaintextDAO maintextDAO = new MaintextDAO(DatabaseConnection.EMF);
+        
+        referencetextPK.setMaintextParvaId(tikaDTO.getParvaId());
+        referencetextPK.setMaintextAdhyayid(tikaDTO.getAdhyayId());
+        referencetextPK.setMaintextShlokanum(tikaDTO.getShlokaNum());
+        referencetextPK.setMaintextShlokaline(tikaDTO.getShlokaLine());
+        referencetextPK.setReftextid(tikaDTO.getRefTextId());
+//
+//        maintextPK.setParvaId(tikaDTO.getParvaId());
+//        maintextPK.setAdhyayid(tikaDTO.getAdhyayId());
+//        maintextPK.setShlokaline(tikaDTO.getShlokaLine());
+//        maintextPK.setShlokanum(tikaDTO.getShlokaNum());
+//        
+//        Maintext maintext = maintextDAO.findMaintext(maintextPK);
+//        Referencetext referencetext = referencetextDAO.findReferencetext(referencetextPK);
+        
+//        referencetext.setReferencetextPK(referencetextPK);
+//        referencetext.setMaintext(maintext);
+//        referencetext.setText(tikaDTO.getRefText());
+
+        try {
+            referencetextDAO.destroy(referencetextPK);
             responseCode = HedwigResponseCode.SUCCESS;
 
         } catch (NonexistentEntityException ex) {

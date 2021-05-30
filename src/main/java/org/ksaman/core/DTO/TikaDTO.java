@@ -9,7 +9,7 @@ package org.ksaman.core.DTO;
  *
  * @author dgrfiv
  */
-public class ReferencetextDTO {
+public class TikaDTO {
     private int refTextId;
     private int parvaId;
     private int adhyayId;

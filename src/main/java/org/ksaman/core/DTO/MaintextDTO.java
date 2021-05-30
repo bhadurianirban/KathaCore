@@ -5,6 +5,7 @@
  */
 package org.ksaman.core.DTO;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -12,7 +13,7 @@ import java.util.List;
  *
  * @author dgrfiv
  */
-public class MaintextDTO {
+public class MaintextDTO implements Serializable{
     
     private int parvaId;
     private int adhyayId;
@@ -32,8 +33,8 @@ public class MaintextDTO {
     
     private int maxShlokaNum;
     private int maxShlokaLine;
-    private List<ReferencetextDTO> referencetextDTOList;
-    private ReferencetextDTO referencetextDTO;
+    private List<TikaDTO> referencetextDTOList;
+    private TikaDTO referencetextDTO;
 
     public int getParvaId() {
         return parvaId;
@@ -171,19 +172,19 @@ public class MaintextDTO {
         this.shlokaNumTranslatedCount = shlokaNumTranslatedCount;
     }
 
-    public List<ReferencetextDTO> getReferencetextDTOList() {
+    public List<TikaDTO> getReferencetextDTOList() {
         return referencetextDTOList;
     }
 
-    public void setReferencetextDTOList(List<ReferencetextDTO> referencetextDTOList) {
+    public void setReferencetextDTOList(List<TikaDTO> referencetextDTOList) {
         this.referencetextDTOList = referencetextDTOList;
     }
 
-    public ReferencetextDTO getReferencetextDTO() {
+    public TikaDTO getReferencetextDTO() {
         return referencetextDTO;
     }
 
-    public void setReferencetextDTO(ReferencetextDTO referencetextDTO) {
+    public void setReferencetextDTO(TikaDTO referencetextDTO) {
         this.referencetextDTO = referencetextDTO;
     }
 
