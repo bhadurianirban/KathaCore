@@ -33,7 +33,7 @@ public class MaintextDTO implements Serializable{
     
     private int maxShlokaNum;
     private int maxShlokaLine;
-    private List<TikaDTO> referencetextDTOList;
+    private List<TikaDTO> tikaDTOList;
     private TikaDTO referencetextDTO;
 
     public int getParvaId() {
@@ -172,12 +172,12 @@ public class MaintextDTO implements Serializable{
         this.shlokaNumTranslatedCount = shlokaNumTranslatedCount;
     }
 
-    public List<TikaDTO> getReferencetextDTOList() {
-        return referencetextDTOList;
+    public List<TikaDTO> getTikaDTOList() {
+        return tikaDTOList;
     }
 
-    public void setReferencetextDTOList(List<TikaDTO> referencetextDTOList) {
-        this.referencetextDTOList = referencetextDTOList;
+    public void setTikaDTOList(List<TikaDTO> tikaDTOList) {
+        this.tikaDTOList = tikaDTOList;
     }
 
     public TikaDTO getReferencetextDTO() {

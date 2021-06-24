@@ -462,7 +462,7 @@ public class KSCoreService {
     
     public List<MaintextDTO> getAdhyayIdList(int parvaId) {
         MaintextDAO maintextDAO = new MaintextDAO(DatabaseConnection.EMF);
-
+        
         List<Integer> adhyayList = maintextDAO.getAdhyayByParvaId(parvaId);
         List<MaintextDTO> adhyayDTOList = new ArrayList<>();
 
@@ -548,6 +548,19 @@ public class KSCoreService {
 
             translationDTOList.add(translationDTO);
         }
+        List<Referencetext> referencetextList = shlokaList.get(0).getReferencetextList();
+        List<TikaDTO> tikaDTOList = new ArrayList<>();
+        for (int i = 0;i < referencetextList.size();i++) {
+            TikaDTO tikaDTO = new TikaDTO();
+            tikaDTO.setParvaId(referencetextList.get(i).getReferencetextPK().getMaintextParvaId());
+            tikaDTO.setAdhyayId(referencetextList.get(i).getReferencetextPK().getMaintextAdhyayid());
+            tikaDTO.setShlokaNum(referencetextList.get(i).getReferencetextPK().getMaintextShlokanum());
+            tikaDTO.setShlokaLine(referencetextList.get(i).getReferencetextPK().getMaintextShlokaline());
+            tikaDTO.setRefTextId(referencetextList.get(i).getReferencetextPK().getReftextid());
+            tikaDTO.setRefText(referencetextList.get(i).getText());
+            tikaDTOList.add(tikaDTO);
+        }
+        translationDTOList.get(0).setTikaDTOList(tikaDTOList);
         return translationDTOList;
     }
     
